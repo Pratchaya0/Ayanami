@@ -7,7 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Set the OpenAI API key and base URL
   OpenAI.baseUrl = 'https://api.pawan.krd/cosmosrp';
-  OpenAI.apiKey = 'pk-AaniJbCufQOjnbuNycVQxAKCUIuerWxboTIhXiLKPHoMkqMF'; // Set the OpenAI API key
+  OpenAI.apiKey = 'your api key'; // Set the OpenAI API key
   runApp(MyApp());
 }
 
