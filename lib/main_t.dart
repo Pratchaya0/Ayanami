@@ -30,47 +30,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _controller = TextEditingController();
   final FlutterTts _flutterTts = FlutterTts();
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
   String _text = '';
   String _response = '';
-  String _selectedLocale = "ja-JP"; // Use locale as identifier
-
-  // List of available voices
-  final List<Map<String, String>> _voices = [
-    {"name": "Microsoft David - English (United States)", "locale": "en-US"},
-    {"name": "Microsoft Mark - English (United States)", "locale": "en-US"},
-    {"name": "Microsoft Zira - English (United States)", "locale": "en-US"},
-    {"name": "Microsoft Pattara - Thai (Thailand)", "locale": "th-TH"},
-    {"name": "Google Deutsch", "locale": "de-DE"},
-    {"name": "Google US English", "locale": "en-US"},
-    {"name": "Google UK English Female", "locale": "en-GB"},
-    {"name": "Google UK English Male", "locale": "en-GB"},
-    {"name": "Google español", "locale": "es-ES"},
-    {"name": "Google español de Estados Unidos", "locale": "es-US"},
-    {"name": "Google français", "locale": "fr-FR"},
-    {"name": "Google हिन्दी", "locale": "hi-IN"},
-    {"name": "Google Bahasa Indonesia", "locale": "id-ID"},
-    {"name": "Google italiano", "locale": "it-IT"},
-    {"name": "Google 日本語", "locale": "ja-JP"},
-    {"name": "Google 한국의", "locale": "ko-KR"},
-    {"name": "Google Nederlands", "locale": "nl-NL"},
-    {"name": "Google polski", "locale": "pl-PL"},
-    {"name": "Google português do Brasil", "locale": "pt-BR"},
-    {"name": "Google русский", "locale": "ru-RU"},
-    {"name": "Google 普通话（中国大陆）", "locale": "zh-CN"},
-    {"name": "Google 粤語（香港）", "locale": "zh-HK"},
-    {"name": "Google 國語（臺灣）", "locale": "zh-TW"}
-  ];
 
   @override
   void initState() {
     super.initState();
     _flutterTts.setLanguage('en-US');
     _flutterTts.setPitch(1.0);
-    _flutterTts.setVoice({"name": "Google 日本語", "locale": "ja-JP"}); // Update to use locale
   }
 
   Future<void> _startListening() async {
@@ -126,36 +96,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
       final aiResponse = chatCompletion.choices.first.message.content;
 
+      print(aiResponse?.first.text);
+
       setState(() {
         _response = aiResponse?.first.text as String;
       });
 
-      print(await _flutterTts.getVoices);
-
+      // Convert AI response to voice
       await _flutterTts.speak(_response);
     } catch (e) {
       setState(() {
         _response = 'Error: $e';
       });
     }
-  }
-
-  void _handleTextInput() async {
-    final message = _controller.text.trim();
-    if (message.isNotEmpty) {
-      _controller.clear();
-      await _sendMessageToAI(message);
-    }
-  }
-
-  Future<void> _handleVoiceChange(String selectedLocale) async {
-    final selectedVoice = _voices.firstWhere((voice) => voice['locale'] == selectedLocale);
-    setState(() {
-      _selectedLocale = selectedLocale;
-      _flutterTts.setVoice(selectedVoice); // Update the voice for TTS      
-    });
-
-    await _flutterTts.speak("Hi");
   }
 
   @override
@@ -180,32 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            DropdownButton<String>(
-              value: _selectedLocale,
-              items: _voices.map((voice) {
-                return DropdownMenuItem<String>(
-                  value: voice['locale'],
-                  child: Text(voice['name'] ?? 'Unknown Voice'),
-                );
-              }).toList(),
-              onChanged: (selectedLocale) {
-                if (selectedLocale != null) {
-                  _handleVoiceChange(selectedLocale);
-                }
-              },
-            ),
-            TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                hintText: "Type your message",
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _handleTextInput,
-                ),
-              ),
-              onSubmitted: (value) => _handleTextInput(),
-            ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:voice_ai_chat/main.dart';
+import 'package:voice_ai_chat/main_t.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
