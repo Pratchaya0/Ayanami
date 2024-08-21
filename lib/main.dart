@@ -3,6 +3,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:voice_ai_chat/app/pages/home.dart';
+import 'package:voice_ai_chat/app/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: SplashScreen(),
+      routes: {
+        '/home': (context) => MyHomePage(),
+      },
     );
   }
 }
