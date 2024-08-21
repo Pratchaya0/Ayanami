@@ -74,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _stopListening() async {
     setState(() => _isListening = false);
     await _speech.stop();
+    // Send text to ai
     await _sendMessageToAI(_text);
   }
 
